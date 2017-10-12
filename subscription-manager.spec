@@ -7,6 +7,7 @@
 %global use_firstboot 0
 %global use_kitchen 1
 %global use_inotify 1
+%global use_python3 0%{?fedora}
 %global rhsm_plugins_dir  /usr/share/rhsm-plugins
 # on recent Fedora and RHEL 7, let's not use m2crypto
 %global use_m2crypto (0%{?fedora} < 23 && 0%{?rhel} < 7)
@@ -328,7 +329,7 @@ Entitlement Platform. This interface is used for the management of system
 entitlements, certificates, and access to content.
 
 
-%if %{defined __python3}
+%if %{use_python3}
 %package -n python3-python-rhsm
 Summary: A Python library to communicate with a Red Hat Unified Entitlement Platform
 BuildRequires: python3-devel
@@ -380,7 +381,7 @@ make -f Makefile install VERSION=%{version}-%{release} \
     %{?install_yum_plugins} %{?install_dnf_plugins} \
     %{?install_zypper_plugins} \
     %{?with_systemd}
-%if %{defined __python3}
+%if %{use_python3}
 make -f Makefile install VERSION=%{version}-%{release} \
     PYTHON=/usr/bin/python3 \
     PREFIX=%{buildroot} PYTHON_SITELIB=%{python3_sitearch} \
@@ -456,7 +457,7 @@ rm -rf %{buildroot}
 %dir %{python_sitearch}/subscription_manager/branding
 %dir %{python_sitearch}/subscription_manager/model
 %dir %{python_sitearch}/subscription_manager/plugin
-%if %{defined __python3}
+%if %{use_python3}
 %exclude %{python3_sitearch}/rhsmlib
 %endif
 %dir %{_var}/spool/rhsm
@@ -537,7 +538,7 @@ rm -rf %{buildroot}
 %{python_sitearch}/subscription_manager/branding/*.py*
 %{python_sitearch}/subscription_manager/model/*.py*
 %{python_sitearch}/subscription_manager/plugin/__init__.py*
-%if %{defined __python3}
+%if %{use_python3}
 %exclude %{python3_sitearch}/subscription_manager-*.egg-info/*
 %exclude %{python3_sitearch}/subscription_manager
 %endif
@@ -582,7 +583,7 @@ rm -rf %{buildroot}
 %{python_sitearch}/rhsmlib/dbus/*.py*
 %{python_sitearch}/rhsmlib/dbus/facts/*.py*
 %{python_sitearch}/rhsmlib/dbus/objects/*.py*
-%if %{defined __python3}
+%if %{use_python3}
 %exclude %{python3_sitearch}/rhsmlib
 %endif
 
@@ -602,7 +603,7 @@ rm -rf %{buildroot}
 # Incude rt CLI tool
 %dir %{python_sitearch}/rct
 %{python_sitearch}/rct/*.py*
-%if %{defined __python3}
+%if %{use_python3}
 %exclude %{python3_sitearch}/rct
 %endif
 %attr(755,root,root) %{_bindir}/rct
@@ -610,7 +611,7 @@ rm -rf %{buildroot}
 # Include consumer debug CLI tool
 %dir %{python_sitearch}/rhsm_debug
 %{python_sitearch}/rhsm_debug/*.py*
-%if %{defined __python3}
+%if %{use_python3}
 %exclude %{python3_sitearch}/rhsm_debug
 %endif
 %attr(755,root,root) %{_bindir}/rhsm-debug
@@ -743,7 +744,7 @@ rm -rf %{buildroot}
 %files -n dnf-plugin-subscription-manager
 %defattr(-,root,root,-)
 %{python_sitearch}/dnf-plugins/*
-%if %{defined __python3}
+%if %{use_python3}
 %exclude %{python3_sitearch}/dnf-plugins/*
 %endif
 %endif
@@ -754,7 +755,7 @@ rm -rf %{buildroot}
 %dir %{python2_sitearch}/rhsm
 %{python2_sitearch}/rhsm/*
 
-%if %{defined __python3}
+%if %{use_python3}
 %files -n python3-python-rhsm
 %defattr(-,root,root,-)
 %dir %{python3_sitearch}/rhsm
