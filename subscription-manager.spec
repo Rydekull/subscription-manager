@@ -113,7 +113,7 @@ Requires:  python-ethtool
 Requires:  python-iniparse
 Requires:  python-decorator
 Requires:  virt-what
-Requires:  python-rhsm >= %{version}
+Requires:  subscription-manager-rhsm >= %{version}
 Requires:  python-decorator
 Requires:  python-six
 Requires:  python-dateutil
@@ -309,7 +309,7 @@ the remote in the currently deployed .origin file.
 %endif
 
 
-%package -n python-rhsm
+%package -n subscription-manager-rhsm
 Summary: A Python library to communicate with a Red Hat Unified Entitlement Platform
 Group: Development/Libraries
 
@@ -321,16 +321,18 @@ Requires: python-iniparse
 # rpm-python is an old name for python2-rpm but RHEL6 uses the old name
 Requires: rpm-python
 Requires: python-six
-Requires: python-rhsm-certificates = %{version}-%{release}
+Requires: subscription-manager-rhsm-certificates = %{version}-%{release}
+Provides: python-rhsm = %{version}-%{release}
+Obsoletes: python-rhsm <= 1.20.2-1
 
-%description -n python-rhsm
+%description -n subscription-manager-rhsm
 A small library for communicating with the REST interface of a Red Hat Unified
 Entitlement Platform. This interface is used for the management of system
 entitlements, certificates, and access to content.
 
 
 %if %{use_python3}
-%package -n python3-python-rhsm
+%package -n python3-subscription-manager-rhsm
 Summary: A Python library to communicate with a Red Hat Unified Entitlement Platform
 BuildRequires: python3-devel
 BuildRequires: python3-setuptools
@@ -341,27 +343,30 @@ Requires: python3-iniparse
 Requires: python3-rpm
 Requires: python3-six
 # M2Crypto isn't even used in new Fedoras and RHEL 8
-Requires: python-rhsm-certificates = %{version}-%{release}
+Requires: subscription-manager-rhsm-certificates = %{version}-%{release}
+Provides: python3-python-rhsm = %{version}-%{release}
+Obsoletes: python3-python-rhsm <= 1.20.2-1
 
 # Required by Fedora packaging guidelines
 %{?python_provide:%python_provide python3-python-rhsm}
 
-%description -n python3-python-rhsm
+%description -n python3-subscription-manager-rhsm
 A small library for communicating with the REST interface of a Red Hat Unified
 Entitlement Platform. This interface is used for the management of system
 entitlements, certificates, and access to content.
 %endif
 
 
-%package -n python-rhsm-certificates
+%package -n subscription-manager-rhsm-certificates
 Summary: Certificates required to communicate with a Red Hat Unified Entitlement Platform
 Group: Development/Libraries
+Provides: python-rhsm-certificates = %{version}-%{release}
+Obsoletes: python-rhsm-certificates <= 1.20.2-1
 
-%description -n python-rhsm-certificates
+%description -n subscription-manager-rhsm-certificates
 This package contains certificates required for communicating with the REST interface
 of a Red Hat Unified Entitlement Platform, used for the management of system entitlements
-and to receive access to content. Please note this package does not have a dependency on
-Python. The name instead reflects its relationship to python-rhsm.
+and to receive access to content.
 
 
 %prep
@@ -750,19 +755,19 @@ rm -rf %{buildroot}
 %endif
 
 
-%files -n python-rhsm
+%files -n subscription-manager-rhsm
 %defattr(-,root,root,-)
 %dir %{python2_sitearch}/rhsm
 %{python2_sitearch}/rhsm/*
 
 %if %{use_python3}
-%files -n python3-python-rhsm
+%files -n python3-subscription-manager-rhsm
 %defattr(-,root,root,-)
 %dir %{python3_sitearch}/rhsm
 %{python3_sitearch}/rhsm/*
 %endif
 
-%files -n python-rhsm-certificates
+%files -n subscription-manager-rhsm-certificates
 %attr(755,root,root) %dir %{_sysconfdir}/rhsm
 %attr(755,root,root) %dir %{_sysconfdir}/rhsm/ca
 
